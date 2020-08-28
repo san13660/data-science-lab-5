@@ -2,6 +2,7 @@ import re
 import sys
 import pandas as pd
 import numpy as np
+import collections
 
 def process_line(line):
     processed = line.lower()
@@ -125,9 +126,25 @@ df = pd.read_csv('GrammarandProductReviews.csv', dtype=object)
 df['reviews.text'].replace('', np.nan, inplace=True)
 df.dropna(subset=['reviews.text'], inplace=True)
 
+wordcount = {}
+
 for index, row in df.iterrows():
     df.at[index,'reviews.text'] = process_line(row['reviews.text'])
+
+    for word in row['reviews.text'].split():
+        if word not in wordcount:
+            wordcount[word] = 1
+        else:
+            wordcount[word] += 1
 
 df.to_csv("preprocesado_GrammarandProductReviews.csv")
 
 print('Archivo preprocesado guardado (preprocesado_GrammarandProductReviews.csv)')
+
+n_print = 10
+word_counter = collections.Counter(wordcount)
+lst = word_counter.most_common(n_print)
+df = pd.DataFrame(lst, columns = ['Word', 'Count'])
+df.to_csv("frecuencia_palabras.csv")
+
+print('Archivo de frecuencia de palabras guardado (frecuencia_palabras.csv)')
