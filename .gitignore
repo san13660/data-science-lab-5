@@ -1,0 +1,7 @@
+*.txt
+*.pickle
+*.csv
+/env
+/.vscode
+
+!requirements.txt
