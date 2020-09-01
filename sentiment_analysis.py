@@ -39,7 +39,7 @@ class predictors(TransformerMixin):
 
 # Basic function to clean the text
 def clean_text(text):
-    return text.strip().lower()
+    return str(text).strip().lower()
 
 # Vectorization
 vectorizer = CountVectorizer(tokenizer = spacy_tokenizer, ngram_range=(1,1))
